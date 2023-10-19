@@ -24,7 +24,7 @@ export class SupplierController {
     }
 
     @Get(':id')
-    async getId(@Param() id: string, @Res() res: Response) {
+    async getId(@Param('id') id: string, @Res() res: Response) {
         try {
             const data = await this.supplierService.getId(id)
             return res.status(200).json({ message: "Berhasil menampilkan supplier", data })
@@ -63,7 +63,7 @@ export class SupplierController {
     }
 
     @Put(':id')
-    async update(@Param() id: string, @Body() payload: any, @Res() res: Response) {
+    async update(@Param('id') id: string, @Body() payload: any, @Res() res: Response) {
         try {
             const data = await this.supplierService.update(id, payload)
             return res.status(200).json({ message: "Berhasil memperbarui supplier", data })
@@ -77,7 +77,7 @@ export class SupplierController {
     }
 
     @Delete(':id')
-    async delete(@Param() id: string, @Res() res: Response) {
+    async delete(@Param('id') id: string, @Res() res: Response) {
         try {
             await this.supplierService.delete(id)
             return res.status(200).json({ message: "Berhasil menghapus supplier", data: {} })
