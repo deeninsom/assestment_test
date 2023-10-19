@@ -42,7 +42,7 @@ export class ProductService {
 
     async delete(id: string): Promise<void> {
         const findProduct = await this.productRepository.findOne({
-            where: { id }
+            where: { id: id }
         });
         if (!findProduct) throw new HttpException(`Product dengan id ${id} tidak ditemukan !`, HttpStatus.NOT_FOUND)
 

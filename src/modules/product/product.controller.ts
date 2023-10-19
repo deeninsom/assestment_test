@@ -23,7 +23,7 @@ export class ProductController {
     }
 
     @Get(':id')
-    async getId(@Param() id: string, @Res() res: Response) {
+    async getId(@Param('id') id: string, @Res() res: Response) {
         try {
             const data = await this.productService.getId(id)
             return res.status(200).json({ message: "Berhasil menampilkan product", data })
@@ -48,7 +48,7 @@ export class ProductController {
                 },
                 supplier: {
                     type: 'string'
-                } 
+                }
             },
             required: ['product_name', 'supplier'],
         },
@@ -79,13 +79,13 @@ export class ProductController {
                 },
                 supplier: {
                     type: 'string'
-                } 
+                }
             },
             required: ['product_name', 'supplier'],
         },
     })
     @Put(':id')
-    async update(@Param() id: string, @Body() payload: any, @Res() res: Response) {
+    async update(@Param('id') id: string, @Body() payload: any, @Res() res: Response) {
         try {
             const data = await this.productService.update(id, payload)
             return res.status(200).json({ message: "Berhasil memperbarui product", data })
@@ -99,7 +99,7 @@ export class ProductController {
     }
 
     @Delete(':id')
-    async delete(@Param() id: string, @Res() res: Response) {
+    async delete(@Param('id') id: string, @Res() res: Response) {
         try {
             await this.productService.delete(id)
             return res.status(200).json({ message: "Berhasil menghapus product", data: {} })
