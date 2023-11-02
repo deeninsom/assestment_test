@@ -1,13 +1,10 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import Products from './modules/product/product.entity';
-import { ProductModule } from './modules/product/product.module';
-import Suppliers from './modules/supplier/supplier.entity';
-import { SupplierModule } from './modules/supplier/supplier.module';
-import Purchases from './modules/purchase/purchase.entity';
-import { PurchaseModule } from './modules/purchase/purchase.module';
-import PurchaseItems from './modules/purchase/purchase_item/purchase_item.entity';
+import Bookings from './modules/booking/booking.entity';
+import { BookingModule } from './modules/booking/booking.module';
+import Kuotas from './modules/kuota/kuota.entity';
+import { KuotaModule } from './modules/kuota/kuota.module';
 
 @Module({
   imports: [
@@ -27,15 +24,12 @@ import PurchaseItems from './modules/purchase/purchase_item/purchase_item.entity
       database: process.env.DATABASE_NAME,
       synchronize: true,
       entities: [
-        Products,
-        Suppliers,
-        Purchases,
-        PurchaseItems
+        Bookings,
+        Kuotas
       ],
     }),
-    ProductModule,
-    SupplierModule,
-    PurchaseModule
+    BookingModule,
+    KuotaModule
   ]
 })
-export class AppModule {}
+export class AppModule { }

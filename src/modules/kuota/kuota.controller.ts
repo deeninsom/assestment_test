@@ -1,18 +1,19 @@
-import { Body, Controller, Delete, Get, HttpException, Param, Post, Put, Res } from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpException, Param, Post, Put, Query, Res } from '@nestjs/common';
 import { ApiBody, ApiTags } from '@nestjs/swagger';
-import { ProductService } from './product.service';
+import { KuotaService } from './kuota.service';
 import { Response } from 'express';
+import { KuotaDTO } from './kuota.dto';
 
-@ApiTags('products')
-@Controller('products')
-export class ProductController {
-    constructor(private readonly productService: ProductService) { }
+@ApiTags('kuota')
+@Controller('kuota')
+export class KuotaController {
+    constructor(private readonly kuotaService: KuotaService) { }
 
     @Get()
-    async get(@Res() res: Response) {
+    async get(@Res() res: Response, @Query('search') search: string) {
         try {
-            const data = await this.productService.get()
-            return res.status(200).json({ message: "Berhasil menampilkan product", data })
+            const data = await this.kuotaService.get(search)
+            return res.status(200).json({ message: "Berhasil menampilkan booking", data })
         } catch (error) {
             if (error instanceof HttpException) {
                 return res.status(error.getStatus()).json({ status: false, message: error.message });
@@ -25,8 +26,8 @@ export class ProductController {
     @Get(':id')
     async getId(@Param('id') id: string, @Res() res: Response) {
         try {
-            const data = await this.productService.getId(id)
-            return res.status(200).json({ message: "Berhasil menampilkan product", data })
+            const data = await this.kuotaService.getId(id)
+            return res.status(200).json({ message: "Berhasil menampilkan booking", data })
         } catch (error) {
             if (error instanceof HttpException) {
                 return res.status(error.getStatus()).json({ status: false, message: error.message });
@@ -36,36 +37,22 @@ export class ProductController {
         }
     }
 
-    @ApiBody({
-        schema: {
-            type: 'object',
-            properties: {
-                product_name: {
-                    type: 'string'
-                },
-                price: {
-                    type: 'number'
-                },
-                supplier: {
-                    type: 'string'
-                }
-            },
-            required: ['product_name', 'supplier'],
-        },
-    })
     @Post()
-    async create(@Body() payload: any, @Res() res: Response) {
+    async create(@Body() payload: KuotaDTO, @Res() res: Response) {
         try {
-            const data = await this.productService.create(payload)
-            return res.status(200).json({ message: "Berhasil menambahkan product", data })
+            const datas: any = payload
+            const data = await this.kuotaService.create(datas);
+            return res.status(200).json({ message: "Berhasil menambahkan booking", data });
         } catch (error) {
             if (error instanceof HttpException) {
                 return res.status(error.getStatus()).json({ status: false, message: error.message });
             } else {
+                console.log(error)
                 return res.status(500).json({ status: false, message: 'Terjadi kesalahan server !', error: error.message });
             }
         }
     }
+
 
     @ApiBody({
         schema: {
@@ -87,8 +74,8 @@ export class ProductController {
     @Put(':id')
     async update(@Param('id') id: string, @Body() payload: any, @Res() res: Response) {
         try {
-            const data = await this.productService.update(id, payload)
-            return res.status(200).json({ message: "Berhasil memperbarui product", data })
+            const data = await this.kuotaService.update(id, payload)
+            return res.status(200).json({ message: "Berhasil memperbarui booking", data })
         } catch (error) {
             if (error instanceof HttpException) {
                 return res.status(error.getStatus()).json({ status: false, message: error.message });
@@ -101,8 +88,8 @@ export class ProductController {
     @Delete(':id')
     async delete(@Param('id') id: string, @Res() res: Response) {
         try {
-            await this.productService.delete(id)
-            return res.status(200).json({ message: "Berhasil menghapus product", data: {} })
+            await this.kuotaService.delete(id)
+            return res.status(200).json({ message: "Berhasil menghapus booking", data: {} })
         } catch (error) {
             if (error instanceof HttpException) {
                 return res.status(error.getStatus()).json({ status: false, message: error.message });
